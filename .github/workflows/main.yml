@@ -1,0 +1,30 @@
+name: Assert Variable Value
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  assert-variable:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18.17.0' # or whatever version you need
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Assert Variable Value
+      run: |
+        VARIABLE_VALUE=$(node -p "require('./src/flaskEndpoint.js').setEndpoint")
+        if [ "$VARIABLE_VALUE" != "https://notesai-flask.onrender.com" ]; then
+          echo "setEndpoint value assertion failed!"
+          exit 1
+        fi
