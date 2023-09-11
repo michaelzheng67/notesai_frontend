@@ -25,6 +25,6 @@ jobs:
       run: |
         VARIABLE_VALUE=$(grep "setEndpoint" ./src/flaskEndpoint.js | awk -F '=' '{print $2}' | tr -d ' ;')
         if [ "$VARIABLE_VALUE" != "'https://notesai-flask.onrender.com'" ]; then
-          echo "setEndpoint value assertion failed!"
+          echo "setEndpoint value assertion failed! Variable value is actually $VARIABLE_VALUE"
           exit 1
         fi
