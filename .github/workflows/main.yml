@@ -23,8 +23,8 @@ jobs:
 
     - name: Assert Variable Value
       run: |
-        VARIABLE_VALUE=$(node -p "require('./src/flaskEndpoint.js').setEndpoint")
-        if [ "$VARIABLE_VALUE" != "https://notesai-flask.onrender.com" ]; then
+        VARIABLE_VALUE=$(grep "setEndpoint" ./src/flaskEndpoint.js | awk -F '=' '{print $2}' | tr -d ' ;')
+        if [ "$VARIABLE_VALUE" != "'https://notesai-flask.onrender.com'" ]; then
           echo "setEndpoint value assertion failed!"
           exit 1
         fi
