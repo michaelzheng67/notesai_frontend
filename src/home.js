@@ -5,7 +5,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import RNFS from 'react-native-fs';
 import { FIREBASE_AUTH } from './firebaseConfig';
 import { setEndpoint } from './flaskEndpoint';
 

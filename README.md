@@ -6,7 +6,12 @@ base64 memory:
 
 
 # Major issues
+- build a langchain app to filter companies based on characteristics of past company investments
+(for acquisition.com)
 - implement CI into app cycle
+- implement memory
+- implement ability to upload pdf to become text note
+- create "loading" text for each notebook screen
 - Create iphone version of app
 
 # Ongoing To-Dos

@@ -11,6 +11,7 @@ import { setEndpoint } from './flaskEndpoint';
 
 const QueryScreen = ({ navigation, route }) => {
     const [outputText, setOutputText] = useState('Note: May have to reload app for chatbot to use new notes');
+    const [historyText, setHistoryText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [inputText, setInputText] = React.useState('');
     const [selectedOption, setSelectedOption] = React.useState(null);
@@ -24,6 +25,10 @@ const QueryScreen = ({ navigation, route }) => {
       setOutputText((prevText) => prevText + "\n------\n" + newText);
     }
 
+    const appendHistoryText = (newText) => {
+      setHistoryText((prevText) => prevText + "\n" + newText);
+    }
+
     // get data from flask
     const queryFlask = () => {
       return fetch(setEndpoint + `/query`, {
@@ -33,6 +38,7 @@ const QueryScreen = ({ navigation, route }) => {
         },
         body: JSON.stringify({
           uid: FIREBASE_AUTH.currentUser.uid,
+          history: historyText,
           query_string: inputText,
           notebook: selectedOption
         })
@@ -46,6 +52,7 @@ const QueryScreen = ({ navigation, route }) => {
         } else{
           appendText("\n" + "Notebook: " + selectedOption.trim() + "\n\n" + "Question: " + inputText + "\n" + "Answer: " + data.result.trim() + "\n");
         }
+        appendHistoryText("Human: " + inputText + "\n" + "AI: " + data.result.trim());
         //appendText(data.result);
         setIsLoading(false);
       })
