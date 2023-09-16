@@ -6,8 +6,11 @@ import { FIREBASE_AUTH } from './firebaseConfig';
 import { setEndpoint } from './flaskEndpoint';
 
 const NotebookScreen = ({ route }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSummaryLoading, setIsSummaryLoading] = useState(false);
   const [notes, setNotes] = useState([]);
   const [isDeleteVisible, setIsDeleteVisible] = useState(false);
+  const [isSummaryVisible, setIsSummaryVisible] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState(null);
   const { id } = route.params;
   const { name } = route.params;
@@ -15,6 +18,7 @@ const NotebookScreen = ({ route }) => {
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [text, setText] = useState(name);
+  const [summary, setSummary] = useState('');
 
   const navigation = useNavigation();
 
@@ -83,8 +87,8 @@ const NotebookScreen = ({ route }) => {
   const deleteFlask = (fileData) => {
     uid = encodeURIComponent(FIREBASE_AUTH.currentUser.uid);
     notebook = encodeURIComponent(name);
-    id = encodeURIComponent(fileData.id);
-    return fetch(setEndpoint + `/delete?uid=${uid}&notebook=${notebook}&id=${id}`, {
+    note_id = encodeURIComponent(fileData.id);
+    return fetch(setEndpoint + `/delete?uid=${uid}&notebook=${notebook}&id=${note_id}`, {
       method: "DELETE",
       headers: {
         'Content-Type':"application/json"
@@ -112,9 +116,41 @@ const NotebookScreen = ({ route }) => {
     .catch(error => console.log(error))
   }
 
+
+  // update notebook name on flask
+  const summarizeNotebook = () => {
+
+    return fetch(setEndpoint + '/summarize', {
+      method: "POST",
+      headers: {
+        'Content-Type':"application/json"
+      },
+      body: JSON.stringify({
+        uid: FIREBASE_AUTH.currentUser.uid,
+        notebook_id: id,
+        note: null,
+        note_id: null
+      })
+    })
+    .then(resp => resp.json())
+    .then(data => {
+      setSummary(data.result);
+    })
+    .catch(error => console.log(error))
+  }
+
   // initialize the page with existing txt files
   useEffect(() => {
-    getFlask();
+    setIsLoading(true);
+
+    const fetchData = async () => {
+      await getFlask();
+
+      // Set loading to false once all operations are completed
+      setIsLoading(false);
+    };
+
+    fetchData();
   }, []);
 
 
@@ -172,6 +208,19 @@ const NotebookScreen = ({ route }) => {
     setNoteToDelete(inputContent);
   }
 
+  const displaySummaryPopup = () => {
+
+    setIsSummaryLoading(true);
+    const fetchData = async () => {
+      setIsSummaryVisible(true);
+      await summarizeNotebook();
+
+      // Set loading to false once all operations are completed
+      setIsSummaryLoading(false);
+    };
+    fetchData();
+  }
+
   const renderNotes = () => {
     return notes.map((note) => (
       <View key={note.title} style={styles.rowContainer}>
@@ -200,6 +249,11 @@ const NotebookScreen = ({ route }) => {
     setIsDeleteVisible(false);
   }
 
+  const handleSummaryCancel = () => {
+    setIsSummaryVisible(false);
+    setSummary('');
+  }
+
   const setModalandUpdate = async () => {
     setModalVisible(false);
     await updateNotebook();
@@ -218,6 +272,10 @@ const NotebookScreen = ({ route }) => {
       <View style={[styles.buttonContainer, {marginBottom : 10}]}>
         <TouchableOpacity onPress={() => draw({currentText : '', currentTitle : '', currentBase64String : null})} style={styles.button}>
           <Text style={styles.buttonText}>Create Note</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={displaySummaryPopup} style={[styles.button, {backgroundColor: '#C7C7C7'}]}>
+          <Text style={styles.buttonText}>Summarize</Text>
         </TouchableOpacity>
       </View>
 
@@ -246,7 +304,9 @@ const NotebookScreen = ({ route }) => {
 
 
       <ScrollView contentContainerStyle={{ alignItems: "center", justifyContent: "center" }}>
-        {renderNotes()}
+        {isLoading ? (
+          <Text>Loading...</Text>
+        ) : renderNotes()}
       </ScrollView>
       <Text>Number of notes: {notes.length}</Text>
 
@@ -261,6 +321,26 @@ const NotebookScreen = ({ route }) => {
 
             <TouchableOpacity style={[styles.addButton, { backgroundColor: '#C7C7C7', width: '50%' }]} onPress={handleCancel}>
               <Text style={styles.addButtonLabel}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Popup when summarizing notebook */}
+      <Modal visible={isSummaryVisible} transparent={true} supportedOrientations={['portrait', 'landscape']}>
+        <View style={styles.popup}>
+          <View style={{backgroundColor : 'white', flex: 1, margin : 50, padding: 40, borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}>
+            
+            <Text style={styles.popupText}>Summary:</Text>
+
+            <ScrollView contentContainerStyle={{ alignItems: "center", justifyContent: "center" }}>
+              {isSummaryLoading ? (
+                <Text>Loading...</Text>
+              ) : <Text style={styles.popupText}>{summary}</Text>}
+            </ScrollView>
+
+            <TouchableOpacity style={[styles.addButton, { backgroundColor: '#C7C7C7', width: '50%' }]} onPress={handleSummaryCancel}>
+              <Text style={styles.addButtonLabel}>Close</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -314,7 +394,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    //justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16, // Optional: To add padding on the sides
   },

@@ -6,10 +6,11 @@ base64 memory:
 
 
 # Major issues
-- build a langchain app to filter companies based on characteristics of past company investments
-(for acquisition.com)
-- implement CI into app cycle
+- have website with "PDF Summarizer" as lead magnet for app
+- A/B test product page optimizations
+- add locust to stress test flask endpoints
 - implement memory
+- option to get quick summary of note / notebook
 - implement ability to upload pdf to become text note
 - create "loading" text for each notebook screen
 - Create iphone version of app
@@ -42,9 +43,9 @@ curl -H 'Content-Type: application/json' \
      https://notesai-flask.onrender.com/query
 
 curl -H 'Content-Type: application/json' \
-      -d '{ "uid":"cWDMTEP1S2RN6Jbf7HHrndeZ4gU2", "query_string":"what do i do with java?", "notebook":"All"}' \
+      -d '{ "uid":"ZEkJK1yJjlXE6fk9XRocer3Ba1H2", "notebook_id":"58", "note": null, "note_id": null}' \
       -X POST \
-     http://127.0.0.1:8000/query
+     http://127.0.0.1:8000/summarize
 
 curl -H 'Content-Type: application/json' \
       -d '{ "uid":"NmjO6WwswsbA5B8YTwFW8t1vzRw2"}' \
