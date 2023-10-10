@@ -6,12 +6,12 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCxsqjrdAnvPE3OxGCAtKRfe3XT0BcStfs",
-    authDomain: "notes-ai-a30ea.firebaseapp.com",
-    projectId: "notes-ai-a30ea",
-    storageBucket: "notes-ai-a30ea.appspot.com",
-    messagingSenderId: "451539755007",
-    appId: "1:451539755007:web:6c37dd31a32c67224d51ca"
+    apiKey: apikey,
+    authDomain: authdomain,
+    projectId: projectid,
+    storageBucket: storagebucket,
+    messagingSenderId: messagingsenderid,
+    appId: appid
   };  
 
 export const FIREBASE_APP = initializeApp(firebaseConfig);
