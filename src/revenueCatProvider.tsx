@@ -5,7 +5,7 @@ import Purchases from "react-native-purchases";
 
 
 const APIKeys = {
-    apple: "appl_gjQRWHZibYxfxtqZMDbLfaeTFVL"
+    apple: APPLE_API
 }
 
 interface RevenueCatProps {
