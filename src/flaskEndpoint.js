@@ -1,4 +1,4 @@
-const renderEndpoint = 'https://notesai-flask.onrender.com';
-const localEndpoint = 'http://127.0.0.1:8000';
+const renderEndpoint = render_endpoint
+const localEndpoint = local_endpoint
 
 export const setEndpoint = renderEndpoint;
