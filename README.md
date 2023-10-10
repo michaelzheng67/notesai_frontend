@@ -24,7 +24,7 @@ base64 memory:
 
 # Bugs
 
-# Ideas and shit
+# Ideas
 - optimize /create-chroma to only change instances where the user was active recently (since the last update)
 
 
