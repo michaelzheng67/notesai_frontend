@@ -34,54 +34,6 @@ base64 memory:
 - run on xcode UI
 
 
-# Test cURL commands
-
-
-curl -H 'Content-Type: application/json' \
-      -d '{ "uid":"NmjO6WwswsbA5B8YTwFW8t1vzRw2", "query_string":"what do i do with java?", "notebook":"All"}' \
-      -X POST \
-     https://notesai-flask.onrender.com/query
-
-curl -H 'Content-Type: application/json' \
-      -d '{ "uid":"ZEkJK1yJjlXE6fk9XRocer3Ba1H2", "notebook_id":"58", "note": null, "note_id": null}' \
-      -X POST \
-     http://127.0.0.1:8000/summarize
-
-curl -H 'Content-Type: application/json' \
-      -d '{ "uid":"NmjO6WwswsbA5B8YTwFW8t1vzRw2"}' \
-      -X POST \
-     http://127.0.0.1:8000/create-chroma
-
-curl -H 'Content-Type: application/json' \
-      -d '{ "uid":"NmjO6WwswsbA5B8YTwFW8t1vzRw2"}' \
-      -X POST \
-     https://notesai-flask.onrender.com/create-chroma
-
-curl -H 'Content-Type: application/json' \
-      -d '{ "uid":"cWDMTEP1S2RN6Jbf7HHrndeZ4gU2","title":"1", "content": "1", "notebook":"New shit", "base64String":"1"}' \
-      -X POST \
-     https://notesai-flask.onrender.com/post
-
-curl -H 'Content-Type: application/json' \
-      -d '{ "uid":"NmjO6WwswsbA5B8YTwFW8t1vzRw2","notebook":"notebook againnn"}' \
-      -X POST \
-     http://127.0.0.1:8000/post-notebook
-
-curl -H 'Content-Type: application/json' \
-      -d '{ "uid":"cWDMTEP1S2RN6Jbf7HHrndeZ4gU2","notebook":"notebook shit again"}' \
-      -X POST \
-     https://notesai-flask.onrender.com/post-notebook
-
-curl -H 'Content-Type: application/json' \
-      -d '{ "uid":"cWDMTEP1S2RN6Jbf7HHrndeZ4gU2", "notebook":"doesnt exist", "title":"doesnt exist"}' \
-      -X DELETE \
-     https://notesai-flask.onrender.com/delete
-
-
-
-
-curl -X DELETE "https://notesai-flask.onrender.com/delete?uid=cWDMTEP1S2RN6Jbf7HHrndeZ4gU2&notebook=doesnt%20exist&title=doesnt%20exist"
-
 # Getting Started
 
 >**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
